@@ -1,4 +1,4 @@
-# Rest Api Node and Mysql
+# Rest Api Node and Mongo
 
 ## Description
 This is an Restful API for Node.js and Mongo. Designed after PHP's beautiful Laravel. This is in the MVC format,
