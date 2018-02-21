@@ -2,6 +2,7 @@ const mongoose 			= require('mongoose');
 const bcrypt 			= require('bcrypt');
 const bcrypt_p 			= require('bcrypt-promise');
 const jwt           	= require('jsonwebtoken');
+const Company           = require('./../models/company');
 
 let UserSchema = mongoose.Schema({
     first:      {type:String},
@@ -38,7 +39,7 @@ UserSchema.pre('save', async function(next){
 })
 
 UserSchema.methods.comparePassword = async function(pw){
-    let err, pass
+    let err, pass;
     if(!this.password) TE('password not set');
 
     [err, pass] = await to(bcrypt_p.compare(pw, this.password));
@@ -47,6 +48,13 @@ UserSchema.methods.comparePassword = async function(pw){
     if(!pass) TE('invalid password');
 
     return this;
+}
+
+UserSchema.methods.Companies = async function(){
+    let err, companies;
+    [err, companies] = await to(Company.find({'users.user':this._id}));
+    if(err) TE('err getting companies');
+    return companies;
 }
 
 UserSchema.virtual('full_name').set(function (name) {

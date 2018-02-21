@@ -1,7 +1,7 @@
-var fs        = require('fs');
-var path      = require('path');
-var basename  = path.basename(__filename);
-var models    = {};
+var fs              = require('fs');
+var path            = require('path');
+var basename        = path.basename(__filename);
+var models          = {};
 const mongoose      = require('mongoose');
 
 if(CONFIG.db_host != ''){
