@@ -68,13 +68,6 @@ UserSchema.methods.Companies = async function(){
     if(err) TE('err getting companies');
     return companies;
 }
-UserSchema.virtual('id').set(function (id) {
-    this._id = id;
-});
-
-UserSchema.virtual('id').get(function () {
-    return this._id
-});
 
 UserSchema.virtual('full_name').set(function (name) {
     var split = name.split(' ');
@@ -92,6 +85,12 @@ UserSchema.virtual('full_name').get(function () { //now you can treat as if this
 UserSchema.methods.getJWT = function(){
     let expiration_time = parseInt(CONFIG.jwt_expiration);
     return "Bearer "+jwt.sign({user_id:this._id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
+};
+
+UserSchema.methods.toWeb = function(){
+    let json = this.toJSON();
+    json.id = this._id;//this is for the front end
+    return json;
 };
 
 let User = module.exports = mongoose.model('User', UserSchema);

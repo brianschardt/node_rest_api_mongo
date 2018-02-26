@@ -11,7 +11,7 @@ const create = async function(req, res){
     [err, company] = await to(Company.create(company_info));
     if(err) return ReE(res, err, 422);
 
-    return ReS(res,{company:company.toJSON({ virtuals: true })}, 201);
+    return ReS(res,{company:company.toWeb()}, 201);
 }
 module.exports.create = create;
 
@@ -24,7 +24,7 @@ const getAll = async function(req, res){
     let companies_json = []
     for (let i in companies){
         let company = companies[i];
-        companies_json.push(company.toJSON({ virtuals: true }))
+        companies_json.push(company.toWeb())
     }
     return ReS(res, {companies: companies_json});
 }
@@ -33,7 +33,7 @@ module.exports.getAll = getAll;
 const get = function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let company = req.company;
-    return ReS(res, {company:company.toJSON({ virtuals: true })});
+    return ReS(res, {company:company.toWeb()});
 }
 module.exports.get = get;
 
@@ -47,7 +47,7 @@ const update = async function(req, res){
     if(err){
         return ReE(res, err);
     }
-    return ReS(res, {company:company.toJSON({ virtuals: true })});
+    return ReS(res, {company:company.toWeb()});
 }
 module.exports.update = update;
 

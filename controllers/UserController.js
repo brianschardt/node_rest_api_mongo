@@ -14,7 +14,7 @@ const create = async function(req, res){
         [err, user] = await to(authService.createUser(body));
 
         if(err) return ReE(res, err, 422);
-        return ReS(res, {message:'Successfully created new user.', user:user.toJSON({ virtuals: true }), token:user.getJWT()}, 201);
+        return ReS(res, {message:'Successfully created new user.', user:user.toWeb(), token:user.getJWT()}, 201);
     }
 }
 module.exports.create = create;
@@ -23,7 +23,7 @@ const get = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let user = req.user;
 
-    return ReS(res, {user:user.toJSON()});
+    return ReS(res, {user:user.toWeb()});
 }
 module.exports.get = get;
 
@@ -72,6 +72,6 @@ const login = async function(req, res){
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
 
-    return ReS(res, {token:user.getJWT(), user:user.toJSON({ virtuals: true })});
+    return ReS(res, {token:user.getJWT(), user:user.toWeb()});
 }
 module.exports.login = login;
