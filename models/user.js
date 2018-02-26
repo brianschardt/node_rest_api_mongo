@@ -3,7 +3,7 @@ const bcrypt 			= require('bcrypt');
 const bcrypt_p 			= require('bcrypt-promise');
 const jwt           	= require('jsonwebtoken');
 const Company           = require('./../models/company');
-const validate          = require('mongoose-validator')
+const validate          = require('mongoose-validator');
 
 let UserSchema = mongoose.Schema({
     first:      {type:String},
@@ -68,6 +68,13 @@ UserSchema.methods.Companies = async function(){
     if(err) TE('err getting companies');
     return companies;
 }
+UserSchema.virtual('id').set(function (id) {
+    this._id = id;
+});
+
+UserSchema.virtual('id').get(function () {
+    return this._id
+});
 
 UserSchema.virtual('full_name').set(function (name) {
     var split = name.split(' ');

@@ -1,7 +1,7 @@
 const Company 			    = require('./../models/company');
 
 let company = async function (req, res, next) {
-    let company_id, err, app;
+    let company_id, err, company;
     company_id = req.params.company_id;
 
     [err, company] = await to(Company.findOne({_id:company_id}));
