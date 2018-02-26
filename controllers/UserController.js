@@ -35,13 +35,16 @@ const update = async function(req, res){
 
     [err, user] = await to(user.save());
     if(err){
+        console.log(err, user);
 
-        if(err.message.includes('phone')){
-            err = 'This phone number is already in use';
-        } else if(err.message.includes('email')){
-            err = 'This email address is already in use';
-        }else{
-            err = 'Unknown error';
+        if(err.message.includes('E11000')){
+            if(err.message.includes('phone')){
+                err = 'This phone number is already in use';
+            } else if(err.message.includes('email')){
+                err = 'This email address is already in use';
+            }else{
+                err = 'Duplicate Key Entry';
+            }
         }
 
         return ReE(res, err);
