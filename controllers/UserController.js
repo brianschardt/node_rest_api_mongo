@@ -35,9 +35,15 @@ const update = async function(req, res){
 
     [err, user] = await to(user.save());
     if(err){
-        if(err.message=='Validation error') err = 'The email address '+data.email+' is already taken';
-        console.log(err);
-        if(err.message.substring(0,6) == 'E11000') err = 'This email address is already in use';
+
+        if(err.message.includes('phone')){
+            err = 'This phone number is already in use';
+        } else if(err.message.includes('email')){
+            err = 'This email address is already in use';
+        }else{
+            err = 'Unknown error';
+        }
+
         return ReE(res, err);
     }
     return ReS(res, {message :'Updated User: '+user.email});

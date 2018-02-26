@@ -31,3 +31,28 @@ const get = function(req, res){
     return ReS(res, {company:company});
 }
 module.exports.get = get;
+
+const update = async function(req, res){
+    let err, company, data;
+    company = req.user;
+    data = req.body;
+    company.set(data);
+
+    [err, company] = await to(company.save());
+    if(err){
+        return ReE(res, err);
+    }
+    return ReS(res, {company:company.toJSON()});
+}
+module.exports.update = update;
+
+const remove = async function(req, res){
+    let company, err;
+    company = req.company;
+
+    [err, company] = await to(company.remove());
+    if(err) return ReE(res, 'error occured trying to delete the company');
+
+    return ReS(res, {message:'Deleted Company'}, 204);
+}
+module.exports.remove = remove;
