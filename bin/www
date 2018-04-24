@@ -4,15 +4,17 @@
  * Module dependencies.
  */
 
-const app = require('../app');
+const app   = require('../app');
 const debug = require('debug')('server:server');
-const http = require('http');
+const http  = require('http');
 
+const pe = require('parse-error');//parses error so you can read error message and handle them accordingly
+const ENV   = require('../config/env');
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(CONFIG.port || '3000');
+const port = normalizePort(ENV.port);
 app.set('port', port);
 
 /**
@@ -91,3 +93,8 @@ function onListening() {
   console.log('Server listenning on port:', addr.port);
 
 }
+
+//This is here to handle all the uncaught promise rejections
+process.on('unhandledRejection', error => {
+    console.error('Uncaught Error', pe(error));
+});

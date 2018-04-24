@@ -1,3 +1,4 @@
+let pe = require('parse-error');//parses error so you can read error message and handle them accordingly
 to = function(promise) {//global function that will help use handle promise rejections, this article talks about it http://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/
     return promise
     .then(data => {
@@ -6,8 +7,6 @@ to = function(promise) {//global function that will help use handle promise reje
         [pe(err)]
     );
 }
-
-pe = require('parse-error');//parses error so you can read error message and handle them accordingly
 
 TE = function(err_message, log){ // TE stands for Throw Error
     if(log === true){
@@ -39,10 +38,6 @@ ReS = function(res, data, code){ // Success Web Response
     return res.json(send_data)
 };
 
-//This is here to handle all the uncaught promise rejections
-process.on('unhandledRejection', error => {
-    console.error('Uncaught Error', pe(error));
-});
 
 
 

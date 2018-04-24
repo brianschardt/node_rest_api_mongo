@@ -2,8 +2,9 @@ const mongoose 			= require('mongoose');
 const bcrypt 			= require('bcrypt');
 const bcrypt_p 			= require('bcrypt-promise');
 const jwt           	= require('jsonwebtoken');
-const Company           = require('./../models/company');
+const Company           = require('../models/company');
 const validate          = require('mongoose-validator');
+const ENV               = require('../config/env');
 
 let UserSchema = mongoose.Schema({
     first:      {type:String},
@@ -83,8 +84,8 @@ UserSchema.virtual('full_name').get(function () { //now you can treat as if this
 });
 
 UserSchema.methods.getJWT = function(){
-    let expiration_time = parseInt(CONFIG.jwt_expiration);
-    return "Bearer "+jwt.sign({user_id:this._id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
+    let expiration_time = parseInt(ENV.jwt_expiration);
+    return "Bearer "+jwt.sign({user_id:this._id}, ENV.jwt_encryption, {expiresIn: expiration_time});
 };
 
 UserSchema.methods.toWeb = function(){

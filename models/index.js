@@ -1,23 +1,33 @@
-var fs              = require('fs');
-var path            = require('path');
-var basename        = path.basename(__filename);
-var models          = {};
-const mongoose      = require('mongoose');
+const fs              = require('fs');
+const path            = require('path');
+const mongoose        = require('mongoose');
+const ENV             = require('../config/env');
+let basename        = path.basename(__filename);
+let models          = {};
 
-if(CONFIG.db_host != ''){
-    var files = fs
+if(ENV.db_host != ''){
+    let files = fs
       .readdirSync(__dirname)
       .filter((file) => {
       return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
     })
       .forEach((file) => {
-        var filename = file.split('.')[0];
-        var model_name = filename.charAt(0).toUpperCase() + filename.slice(1);
+        let filename = file.split('.')[0];
+        let model_name = filename.charAt(0).toUpperCase() + filename.slice(1);
         models[model_name] = require('./'+file);
     });
 
+
     mongoose.Promise = global.Promise; //set mongo up to use promises
-    const mongo_location = 'mongodb://'+CONFIG.db_host+':'+CONFIG.db_port+'/'+CONFIG.db_name;
+
+    let mongo_location;
+    if(!ENV.db_url){
+        mongo_location = `${ENV.db_host}:${ENV.db_port}/${ENV.db_name}`;
+        if(ENV.db_user) mongo_location = `${ENV.db_user}:${ENV.db_password}@${mongo_location}`;
+        mongo_location = 'mongodb://'+mongo_location;
+    }else{
+        mongo_location = ENV.db_url
+    }
 
     mongoose.connect(mongo_location).catch((err)=>{
         console.log('*** Can Not Connect to Mongo Server:', mongo_location)

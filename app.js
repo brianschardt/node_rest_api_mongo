@@ -1,7 +1,7 @@
-require('./config/config');     //instantiate configuration variables
+const ENV = require('./config/env');     //instantiate configuration variables
 require('./global_functions');  //instantiate global functions
 
-console.log("Environment:", CONFIG.app)
+console.log("Environment:", ENV.app)
 
 const express 		= require('express');
 const logger 	    = require('morgan');
@@ -39,11 +39,11 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/v1', v1);
+app.use('/api', v1);
 
 app.use('/', function(req, res){
 	res.statusCode = 200;//send the appropriate status code
-	res.json({status:"success", message:"Parcel Pending API", data:{}})
+	res.json({status:"success", message:"EDEN API", data:{}})
 });
 
 // catch 404 and forward to error handler
@@ -65,3 +65,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
