@@ -1,8 +1,3 @@
-require('./config/config');     //instantiate configuration variables
-require('./global_functions');  //instantiate global functions
-
-console.log("Environment:", CONFIG.app)
-
 const express 		= require('express');
 const logger 	    = require('morgan');
 const bodyParser 	= require('body-parser');
@@ -12,6 +7,7 @@ const v1 = require('./routes/v1');
 
 const app = express();
 
+const CONFIG = require('./config/config');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Passport
 app.use(passport.initialize());
 
+//Log Env
+console.log("Environment:", CONFIG.app)
 //DATABASE
 const models = require("./models");
 

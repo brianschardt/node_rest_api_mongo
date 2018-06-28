@@ -1,11 +1,12 @@
-var fs              = require('fs');
-var path            = require('path');
-var basename        = path.basename(__filename);
-var models          = {};
+const fs              = require('fs');
+const path            = require('path');
+const basename        = path.basename(__filename);
+const models          = {};
 const mongoose      = require('mongoose');
+const CONFIG        = require('../config/config');
 
 if(CONFIG.db_host != ''){
-    var files = fs
+    let files = fs
       .readdirSync(__dirname)
       .filter((file) => {
       return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');

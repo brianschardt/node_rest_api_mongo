@@ -2,8 +2,10 @@ const mongoose 			= require('mongoose');
 const bcrypt 			= require('bcrypt');
 const bcrypt_p 			= require('bcrypt-promise');
 const jwt           	= require('jsonwebtoken');
-const Company           = require('./../models/company');
+const Company           = require('./company.model');
 const validate          = require('mongoose-validator');
+const {TE, to}          = require('../services/util.service');
+const CONFIG            = require('../config/config');
 
 let UserSchema = mongoose.Schema({
     first:      {type:String},
